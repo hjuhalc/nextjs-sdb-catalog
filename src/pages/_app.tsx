@@ -11,7 +11,9 @@ import {
   MediaQuery,
   Box,
   Burger,
+  Checkbox,
   NavLink,
+  Flex,
 } from '@mantine/core';
 import { IconCategory } from '@tabler/icons';
 import React from 'react';
@@ -64,7 +66,14 @@ export default function App(props: AppProps) {
           aside={
             <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
               <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-                <Text>Application sidebar</Text>
+                <Flex direction="column" gap="sm">
+                  <Text>Brand</Text>
+                  <Checkbox label="Nike" />
+                  <Checkbox label="Louis Vuitton" />
+                  <Checkbox label="GUCCI" />
+                  <Checkbox label="Chanel" />
+                  <Checkbox label="Adidas" />
+                </Flex>
               </Aside>
             </MediaQuery>
           }
@@ -86,7 +95,7 @@ export default function App(props: AppProps) {
                   />
                 </MediaQuery>
 
-                <Text>Application header</Text>
+                <Text>Product Catalog</Text>
               </Box>
             </Header>
           }

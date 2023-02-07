@@ -11,25 +11,30 @@ import {
   Center,
   Paper,
   UnstyledButton,
+  TextInput,
+  Box,
 } from '@mantine/core';
 import {
-  IconGasStation,
-  IconGauge,
-  IconManualGearbox,
-  IconUsers,
   IconSelector,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
-  TablerIcon,
 } from '@tabler/icons';
 import { keys } from '@mantine/utils';
 import React from 'react';
 
 const useStyles = createStyles((theme) => ({
   card: {
+    height: 'auto',
+    width: '20rem',
+
     backgroundColor:
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+
+    [`@media (max-width: ${theme.breakpoints.xl}px)`]: {
+      height: '100%',
+      width: '100%',
+    },
   },
 
   imageSection: {
@@ -42,7 +47,7 @@ const useStyles = createStyles((theme) => ({
     }`,
   },
 
-  label: {
+  productName: {
     marginBottom: theme.spacing.xs,
     lineHeight: 1,
     fontWeight: 700,
@@ -79,10 +84,30 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const mockdata = [
-  { label: 'Decorus', icon: IconUsers, price: 1000 },
-  { label: 'Eager', icon: IconGauge, price: 2000 },
-  { label: 'Poppy Petals', icon: IconManualGearbox, price: 3000 },
-  { label: 'Electric Zap', icon: IconGasStation, price: 4000 },
+  {
+    name: 'Decorus',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    price: 1000,
+    label: ['Label 1', 'Label 2', 'Label 3'],
+  },
+  {
+    name: 'Eager',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    price: 2000,
+    label: ['Label 1', 'Label 2'],
+  },
+  {
+    name: 'Poppy Petals',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    price: 3000,
+    label: ['Label 1', 'Label 2'],
+  },
+  {
+    name: 'Electric Zap',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    price: 4000,
+    label: ['Label 1', 'Label 2'],
+  },
 ];
 
 interface ThProps {
@@ -93,9 +118,10 @@ interface ThProps {
 }
 
 interface RowData {
-  label: string;
-  icon: TablerIcon;
+  name: string;
+  description: string;
   price: number;
+  label: string[];
 }
 
 interface TableSortProps {
@@ -104,7 +130,7 @@ interface TableSortProps {
 
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
-  return data.filter((item) => item.label.toLowerCase().includes(query));
+  return data.filter((item) => item.name.toLowerCase().includes(query));
 }
 
 function sortData(
@@ -139,14 +165,12 @@ function MenuItem({ children, reversed, sorted, onSort }: ThProps) {
 
   return (
     <UnstyledButton onClick={onSort}>
-      <Group position="apart">
-        <Text weight={500} size="sm">
-          {children}
-        </Text>
+      <Flex align="center" gap={2}>
+        <Text size="sm">{children}</Text>
         <Center>
           <Icon size={14} stroke={1.5} />
         </Center>
-      </Group>
+      </Flex>
     </UnstyledButton>
   );
 }
@@ -157,13 +181,6 @@ export default function ProductListing(/*{ data }: TableSortProps*/) {
   const [sortedData, setSortedData] = React.useState(mockdata);
   const [sortBy, setSortBy] = React.useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = React.useState(false);
-
-  const features = mockdata.map((feature) => (
-    <Center key={feature.label}>
-      <feature.icon size={18} className={classes.icon} stroke={1.5} />
-      <Text size="xs">{feature.label}</Text>
-    </Center>
-  ));
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -185,52 +202,45 @@ export default function ProductListing(/*{ data }: TableSortProps*/) {
   };
 
   const products = sortedData.map((product, idx) => (
-    <Card withBorder radius="md" className={classes.card} key={idx}>
+    <Card withBorder m="sm" radius="md" className={classes.card} key={idx}>
       <Card.Section className={classes.imageSection}>
-        <Image src="https://i.imgur.com/ZL52Q2D.png" alt={product.label} />
+        <Image src="https://i.imgur.com/ZL52Q2D.png" alt={product.name} />
       </Card.Section>
-
       <Group position="apart" mt="md">
         <div>
-          <Text weight={500}>{product.label}</Text>
+          <Text weight={500}>{product.name}</Text>
           <Text size="xs" color="dimmed">
-            Free recharge at any station
+            {product.description}
           </Text>
         </div>
-        <Badge variant="outline">25% off</Badge>
+        <Badge variant="outline" color="green">
+          25% off
+        </Badge>
       </Group>
-
       <Card.Section className={classes.section} mt="md">
-        <Text size="sm" color="dimmed" className={classes.label}>
-          Basic configuration
+        <Text size="sm" color="dimmed" className={classes.productName}>
+          Label
         </Text>
 
         <Group spacing={8} mb={-8}>
-          {features}
+          {product.label.map((label) => (
+            <Center key={label}>
+              <Text size="xs">{label}</Text>
+            </Center>
+          ))}
         </Group>
       </Card.Section>
-
       <Card.Section className={classes.section}>
-        <Group spacing={30}>
-          <div>
+        <Box mt="sm" mb="sm">
+          <Group position="apart">
             <Text size="xl" weight={700} sx={{ lineHeight: 1 }}>
-              {product.price}
+              ₱{product.price}
             </Text>
-            <Text
-              size="sm"
-              color="dimmed"
-              weight={500}
-              sx={{ lineHeight: 1 }}
-              mt={3}
-            >
-              per day
-            </Text>
-          </div>
-
-          <Button radius="xl" style={{ flex: 1 }}>
-            Rent now
-          </Button>
-        </Group>
+            <Button radius="lg" w="50%">
+              Add to cart
+            </Button>
+          </Group>
+        </Box>
       </Card.Section>
     </Card>
   ));
@@ -238,15 +248,23 @@ export default function ProductListing(/*{ data }: TableSortProps*/) {
   return (
     <Container size="lg">
       <Paper w="auto" shadow="xs" p="md">
-        <MenuItem
-          reversed={reverseSortDirection}
-          sorted={sortBy === 'price'}
-          onSort={() => setSorting('price')}
-        >
-          Price
-        </MenuItem>
+        <Flex justify="flex-start" gap="md">
+          <TextInput
+            placeholder="Search by item name"
+            icon={<IconSearch size={14} stroke={1.5} />}
+            value={search}
+            onChange={handleSearchChange}
+          />
+          <MenuItem
+            reversed={reverseSortDirection}
+            sorted={sortBy === 'price'}
+            onSort={() => setSorting('price')}
+          >
+            Price
+          </MenuItem>
+        </Flex>
       </Paper>
-      <Flex align="center" wrap="wrap" gap={12}>
+      <Flex align="center" justify="space" wrap="wrap" mt="md" mb="md">
         {products.length > 0 ? products : <Text>Nothing found</Text>}
       </Flex>
     </Container>
