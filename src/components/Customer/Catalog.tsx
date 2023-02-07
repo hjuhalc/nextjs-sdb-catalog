@@ -13,12 +13,21 @@ import {
   UnstyledButton,
   TextInput,
   Box,
+  AppShell,
+  Navbar,
+  NavLink,
+  Aside,
+  Header,
+  Burger,
+  Checkbox,
+  MediaQuery,
 } from '@mantine/core';
 import {
   IconSelector,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
+  IconCategory,
 } from '@tabler/icons';
 import { keys } from '@mantine/utils';
 import React from 'react';
@@ -175,7 +184,7 @@ function MenuItem({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-export default function ProductListing(/*{ data }: TableSortProps*/) {
+export default function Catalog() {
   const { classes } = useStyles();
   const [search, setSearch] = React.useState('');
   const [sortedData, setSortedData] = React.useState(mockdata);
