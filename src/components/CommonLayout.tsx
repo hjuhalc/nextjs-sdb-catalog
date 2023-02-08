@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   AppShell,
   Aside,
   Box,
@@ -8,6 +9,8 @@ import {
   Navbar,
   Text,
 } from "@mantine/core";
+import { IconUser } from "@tabler/icons";
+import Link from "next/link";
 import React from "react";
 
 type UserCommonProps = {
@@ -45,6 +48,10 @@ export default function CommonLayout({
             </MediaQuery>
 
             <Text>Product Catalog</Text>
+
+            <ActionIcon ml="auto" variant="transparent" size="lg">
+              <IconUser size={18} />
+            </ActionIcon>
           </Box>
         </Header>
       }

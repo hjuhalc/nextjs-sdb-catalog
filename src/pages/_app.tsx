@@ -1,4 +1,6 @@
+import RouterTransition from "@/components/RouterTransition";
 import { MantineProvider } from "@mantine/core";
+import { NavigationProgress } from "@mantine/nprogress";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React from "react";
@@ -26,6 +28,7 @@ export default function App(props: AppProps) {
           colorScheme: "dark",
         }}
       >
+        <RouterTransition />
         <main>
           <Component {...pageProps} />
         </main>

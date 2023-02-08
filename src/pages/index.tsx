@@ -5,31 +5,32 @@ import { Checkbox, Flex, NavLink, Text } from "@mantine/core";
 import { IconCategory } from "@tabler/icons";
 import React from "react";
 
+const BRANDS = ["Nike", "Louis Vuitton", "GUCCI", "Chanel", "Adidas", "Nike"];
+const CATEGORIES = ["Shirt", "Shorts", "Hoodie", "Pants"];
+
 export default function Home() {
   return (
     <CommonLayout
       navbar={<CommonNav active="home" />}
       aside={
-        <>
+        <Flex direction="column" gap="sm">
           <NavLink
             label="Categories"
             icon={<IconCategory size={16} stroke={1.5} />}
           >
-            <NavLink label="T-Shirt" />
-            <NavLink label="Shirt" />
-            <NavLink label="Hoodies" />
-            <NavLink label="Shorts" />
-            <NavLink label="Pants" />
-          </NavLink>{" "}
-          <Flex direction="column" gap="sm">
-            <Text>Brand</Text>
-            <Checkbox label="Nike" />
-            <Checkbox label="Louis Vuitton" />
-            <Checkbox label="GUCCI" />
-            <Checkbox label="Chanel" />
-            <Checkbox label="Adidas" />
-          </Flex>
-        </>
+            {CATEGORIES.map((category) => (
+              <NavLink key={category} label={category} />
+            ))}
+          </NavLink>
+          <NavLink
+            label="Brands"
+            icon={<IconCategory size={16} stroke={1.5} />}
+          >
+            {BRANDS.map((brand) => (
+              <Checkbox mb="sm" key={brand} label={brand} />
+            ))}
+          </NavLink>
+        </Flex>
       }
     >
       <Catalog />
