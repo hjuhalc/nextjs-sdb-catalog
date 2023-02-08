@@ -1,58 +1,58 @@
 import {
-  Container,
-  Card,
-  Flex,
-  Image,
-  Button,
-  Badge,
-  Group,
-  Text,
-  createStyles,
-  Center,
-  Paper,
-  UnstyledButton,
-  TextInput,
-  Box,
   AppShell,
-  Navbar,
-  NavLink,
   Aside,
-  Header,
+  Badge,
+  Box,
   Burger,
+  Button,
+  Card,
+  Center,
   Checkbox,
+  Container,
+  Flex,
+  Group,
+  Header,
+  Image,
   MediaQuery,
-} from '@mantine/core';
+  NavLink,
+  Navbar,
+  Paper,
+  Text,
+  TextInput,
+  UnstyledButton,
+  createStyles,
+} from "@mantine/core";
+import { keys } from "@mantine/utils";
 import {
-  IconSelector,
+  IconCategory,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
-  IconCategory,
-} from '@tabler/icons';
-import { keys } from '@mantine/utils';
-import React from 'react';
+  IconSelector,
+} from "@tabler/icons";
+import React from "react";
 
 const useStyles = createStyles((theme) => ({
   card: {
-    height: 'auto',
-    width: '20rem',
+    height: "auto",
+    width: "20rem",
 
     backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
 
     [`@media (max-width: ${theme.breakpoints.xl}px)`]: {
-      height: '100%',
-      width: '100%',
+      height: "100%",
+      width: "100%",
     },
   },
 
   imageSection: {
     padding: theme.spacing.md,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
   },
 
@@ -62,27 +62,27 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 700,
     fontSize: theme.fontSizes.xs,
     letterSpacing: -0.25,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
 
   section: {
     padding: theme.spacing.md,
     borderTop: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
   },
 
   icon: {
     marginRight: 5,
     color:
-      theme.colorScheme === 'dark'
+      theme.colorScheme === "dark"
         ? theme.colors.dark[2]
         : theme.colors.gray[5],
   },
   responsiveText: {
     fontSize: theme.fontSizes.md,
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan("sm")]: {
       fontSize: theme.fontSizes.sm,
     },
 
@@ -94,28 +94,28 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
   {
-    name: 'Decorus',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    name: "Decorus",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 1000,
-    label: ['Label 1', 'Label 2', 'Label 3'],
+    label: ["Label 1", "Label 2", "Label 3"],
   },
   {
-    name: 'Eager',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    name: "Eager",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 2000,
-    label: ['Label 1', 'Label 2'],
+    label: ["Label 1", "Label 2"],
   },
   {
-    name: 'Poppy Petals',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    name: "Poppy Petals",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 3000,
-    label: ['Label 1', 'Label 2'],
+    label: ["Label 1", "Label 2"],
   },
   {
-    name: 'Electric Zap',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    name: "Electric Zap",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 4000,
-    label: ['Label 1', 'Label 2'],
+    label: ["Label 1", "Label 2"],
   },
 ];
 
@@ -186,7 +186,7 @@ function MenuItem({ children, reversed, sorted, onSort }: ThProps) {
 
 export default function Catalog() {
   const { classes } = useStyles();
-  const [search, setSearch] = React.useState('');
+  const [search, setSearch] = React.useState("");
   const [sortedData, setSortedData] = React.useState(mockdata);
   const [sortBy, setSortBy] = React.useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = React.useState(false);
@@ -266,8 +266,8 @@ export default function Catalog() {
           />
           <MenuItem
             reversed={reverseSortDirection}
-            sorted={sortBy === 'price'}
-            onSort={() => setSorting('price')}
+            sorted={sortBy === "price"}
+            onSort={() => setSorting("price")}
           >
             Price
           </MenuItem>

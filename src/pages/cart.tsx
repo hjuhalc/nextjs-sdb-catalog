@@ -1,27 +1,21 @@
+import CommonLayout from "@/components/CommonLayout";
+import CommonNav from "@/components/CommonNav";
 import {
   ActionIcon,
-  AppShell,
-  Button,
-  Header,
   Box,
-  MediaQuery,
-  Burger,
-  Text,
+  Button,
   Checkbox,
-  Navbar,
-  Image,
-  Flex,
-  Paper,
-  Container,
-  ScrollArea,
-  Grid,
   Divider,
-  NavLink,
-} from '@mantine/core';
-import { useListState } from '@mantine/hooks';
-import { IconShoppingCart, IconTrash, IconUser } from '@tabler/icons';
-import Link from 'next/link';
-import React from 'react';
+  Flex,
+  Grid,
+  Image,
+  Paper,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
+import { useListState } from "@mantine/hooks";
+import { IconTrash } from "@tabler/icons";
+import React from "react";
 
 type Item = {
   id: number;
@@ -35,56 +29,56 @@ type Item = {
 const mockdata = [
   {
     id: 1,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
   {
     id: 2,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
   {
     id: 3,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
   {
     id: 4,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
   {
     id: 5,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
   {
     id: 6,
-    name: 'Nike Air Force 1',
+    name: "Nike Air Force 1",
     price: 100,
     image:
-      'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/73eb7950-edf2-4dbf-96c3-9b684fe974a9/flex-experience-run-11-next-nature-road-running-shoes-rB6h46.png",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     checked: false,
   },
 ];
@@ -96,10 +90,8 @@ interface SyntheticEvent<T> {
 const DELIVERY_FEE = 50;
 
 export default function Cart() {
-  const [opened, setOpened] = React.useState(false);
   const [selectedItems, setSelectedItems] = React.useState<Item[]>([]);
   const [values, handlers] = useListState(mockdata);
-  const [hasSubtotal, setHasSubtotal] = React.useState(false);
 
   const allChecked = values.every((value) => value.checked);
 
@@ -118,11 +110,11 @@ export default function Cart() {
     item: Item,
     index: number
   ) => {
-    handlers.setItemProp(index, 'checked', event.currentTarget.checked);
+    handlers.setItemProp(index, "checked", event.currentTarget.checked);
 
     setSelectedItems((items) => {
       if (items.filter((i) => i.id === item.id).length > 0) {
-        console.log('remove');
+        console.log("remove");
         return items.filter((i) => i.id !== item.id);
       }
 
@@ -142,9 +134,9 @@ export default function Cart() {
     <Box key={item.id} mt="md">
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <Flex align="center" justify="center" gap="sm">
@@ -154,15 +146,15 @@ export default function Cart() {
           />
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               width: 50,
               height: 50,
-              borderRadius: 'sm',
-              overflow: 'hidden',
-              backgroundColor: 'gray',
-              mr: 'md',
+              borderRadius: "sm",
+              overflow: "hidden",
+              backgroundColor: "gray",
+              mr: "md",
             }}
           >
             <Image src={item.image} alt={item.name} />
@@ -177,43 +169,7 @@ export default function Cart() {
   ));
 
   return (
-    <AppShell
-      header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: '100%',
-            }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                mr="xl"
-              />
-            </MediaQuery>
-
-            <Text>Product Catalog</Text>
-          </Box>
-        </Header>
-      }
-      navbar={
-        <Navbar
-          p="md"
-          hiddenBreakpoint="sm"
-          hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
-        >
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <NavLink label="Account" icon={<IconUser size={18} />} />
-          </Link>
-          <NavLink label="Cart" icon={<IconShoppingCart size={18} />} />
-        </Navbar>
-      }
-    >
+    <CommonLayout navbar={<CommonNav active="cart" />}>
       <Flex wrap="wrap" w="100%" gap="sm">
         <Paper
           shadow="xs"
@@ -292,6 +248,6 @@ export default function Cart() {
           </Flex>
         </Paper>
       </Flex>
-    </AppShell>
+    </CommonLayout>
   );
 }
