@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
 
-    [`@media (max-width: ${theme.breakpoints.xl}px)`]: {
+    [theme.fn.smallerThan("xl")]: {
       height: "100%",
       width: "100%",
     },
@@ -84,10 +84,6 @@ const useStyles = createStyles((theme) => ({
 
     [theme.fn.smallerThan("sm")]: {
       fontSize: theme.fontSizes.sm,
-    },
-
-    [theme.fn.smallerThan(600)]: {
-      fontSize: theme.fontSizes.xs,
     },
   },
 }));

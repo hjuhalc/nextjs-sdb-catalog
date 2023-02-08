@@ -1,11 +1,22 @@
 import CommonLayout from "@/components/CommonLayout";
 import CommonNav from "@/components/CommonNav";
-import { Box } from "@mantine/core";
+import { Paper, Text } from "@mantine/core";
 
 export default function Account() {
   return (
     <CommonLayout navbar={<CommonNav active="account" />}>
-      <Box p="xl">Account page</Box>
+      <Paper
+        shadow="xs"
+        p="md"
+        withBorder
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        <Text>Name</Text>
+        <Text>Email</Text>
+        <Text>Phone</Text>
+      </Paper>
     </CommonLayout>
   );
 }
