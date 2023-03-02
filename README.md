@@ -10,28 +10,38 @@ A product catalog built using [Next.js](https://nextjs.org/) and [SurrealDB](htt
 - [Yarn](https://yarnpkg.com/)
 - [SurrealDB](https://surrealdb.com/install)
 
-Clone the repository:
+1. Clone the repository.
 
-```bash
-git clone
-```
+2. Run SurrealDB:
 
-Create a copy of `.env.example` and rename it to `.env`:
+    ```bash
+    surreal start --user root --pass root file://catalog.db 
+    ```
 
-```bash
-cp .env.example .env
-```
+    With Docker:
 
-Install dependencies:
+    ```bash
+    docker run --rm -p 8000:8000 surrealdb/surrealdb:latest start --user root --pass root file://catalog.db
+    ```
 
-```bash
-yarn install
-```
-Run the development server:
+2. Create a copy of `.env.example` and rename it to `.env`:
 
-```bash
-yarn dev
-```
+    ```bash
+    cp .env.example .env
+    ```
+
+    > Make sure to update the env vars in `.env` with your own values.
+
+3. Install dependencies:
+
+    ```bash
+    yarn install
+    ```
+4. Run the development server:
+
+    ```bash
+    yarn dev
+    ```
 
 ## SurrealDB
 
