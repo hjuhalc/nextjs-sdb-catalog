@@ -1,6 +1,6 @@
 # nextjs-sdb-catalog
 
-A product catalog built using [Next.js](https://nextjs.org/) and [SurrealDB](https://surrealdb.com/). This project is a work in progess.
+A truly scalable product catalog built using [Next.js](https://nextjs.org/) and [SurrealDB](https://surrealdb.com/). This project is a work in progess.
 
 ## Getting Started
 
@@ -45,4 +45,4 @@ A product catalog built using [Next.js](https://nextjs.org/) and [SurrealDB](htt
 
 ## SurrealDB
 
-You can find a basic CRUD implementation with SurrealDB in the [`/product`](./src/pages/product.tsx) route.
+You can find a basic CRUD implementation with SurrealDB in the [`/product`](./src/pages/product.tsx) and [`/api/products`](./src/pages/api).
