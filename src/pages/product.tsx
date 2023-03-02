@@ -34,10 +34,10 @@ export default function Product() {
   if (error) return nothing("Failed to load");
   if (isLoading) return nothing(<Loader />);
 
-  const handleAdd = () => {
-    fetch("/api/products", {
-      method: "POST",
-      body: JSON.stringify({ name, price }),
+  const crud = (url: string, method: string, body?: object) =>
+    fetch(url, {
+      method,
+      body: JSON.stringify(body),
     }).then((res) => {
       setAlert(true);
       if (res.ok) {
@@ -49,34 +49,17 @@ export default function Product() {
       setName("");
       setPrice(0);
     });
+
+  const handleAdd = () => {
+    crud("/api/products", "POST", { name, price });
   };
 
   const handleDelete = (id: string) => {
-    fetch(`/api/products/${id}`, {
-      method: "DELETE",
-    }).then((res) => {
-      setAlert(true);
-
-      if (res.ok) {
-        setModalSucess(true);
-      } else {
-        setModalSucess(true);
-      }
-    });
+    crud(`/api/products/${id}`, "DELETE");
   };
 
   const handleUpdate = (id: string) => {
-    fetch(`/api/products/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(toEdit),
-    }).then((res) => {
-      setAlert(true);
-      if (res.ok) {
-        setModalSucess(true);
-      } else {
-        setModalSucess(false);
-      }
-    });
+    crud(`/api/products/${id}`, "PUT", toEdit);
   };
 
   return (
