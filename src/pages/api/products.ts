@@ -1,35 +1,20 @@
+import { sql } from "@/db/http";
+import { Database } from "@/types";
+import { constructQuery } from "@/utils/sql";
 import { NextApiRequest, NextApiResponse } from "next/types";
-
-import { constructQuery } from "../../utils/sql";
-
-interface Database {
-  host: string;
-  name: string;
-  user: string;
-  pass: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const host = process.env.DB_HOST;
-  const name = process.env.DB_NAME;
-  const user = process.env.DB_USERNAME;
-  const pass = process.env.DB_PASSWORD;
-  if (!host || !name || !user || !pass) {
-    res.status(500).json({ error: "Missing env variables" });
-    return;
-  }
-
   var resp;
   switch (req.method) {
     case "GET":
-      resp = await get({ host, name, user, pass });
+      resp = await get();
       res.status(resp.status).json(resp.body);
       break;
     case "POST":
-      resp = await post(req, res, { host, name, user, pass });
+      resp = await post(req);
       res.status(resp.status).json(resp.body);
     default:
       res.status(405).json({ error: "Method not allowed" });
@@ -37,27 +22,11 @@ export default async function handler(
   }
 }
 
-async function get(db: Database) {
-  const query = "SELECT * FROM product";
-  const url = new URL("sql", db.host);
-
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${db.user}:${db.pass}`).toString(
-        "base64"
-      )}`,
-      Accept: "application/json",
-      DB: db.name,
-      NS: "catalog",
-    },
-    body: query,
-  });
-
-  return { body: await resp.json(), status: resp.status };
+async function get() {
+  return await sql("SELECT * FROM product");
 }
 
-async function post(req: NextApiRequest, res: NextApiResponse, db: Database) {
+async function post(req: NextApiRequest) {
   const body = JSON.parse(req.body);
   if (!body.name || !body.price) {
     return {
@@ -69,19 +38,6 @@ async function post(req: NextApiRequest, res: NextApiResponse, db: Database) {
   const query = "INSERT INTO product (name, price) VALUES (:name, :price)";
   const params = { name: body.name, price: body.price };
   const [escapedQuery, _values] = constructQuery(query, params);
-  const url = new URL("sql", db.host);
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${db.user}:${db.pass}`).toString(
-        "base64"
-      )}`,
-      Accept: "application/json",
-      DB: db.name,
-      NS: "catalog",
-    },
-    body: escapedQuery,
-  });
 
-  return { body: await resp.json(), status: resp.status };
+  return await sql(escapedQuery);
 }

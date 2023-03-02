@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Alert,
   Box,
   Button,
@@ -8,12 +9,13 @@ import {
   Divider,
   Flex,
   Input,
+  Loader,
+  Modal,
   NumberInput,
-  ScrollArea,
   Text,
 } from "@mantine/core";
-import { IconAlertCircle } from "@tabler/icons";
-import React from "react";
+import { IconAlertCircle, IconEdit, IconTrash } from "@tabler/icons";
+import React, { ReactNode } from "react";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -25,24 +27,99 @@ export default function Product() {
   const [name, setName] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [alert, setAlert] = React.useState(false);
-  const [addSuccess, setAddSucess] = React.useState(false);
+  const [modelSucess, setModalSucess] = React.useState(false);
+  const [edit, setEdit] = React.useState(false);
+  const [toEdit, setToEdit] = React.useState({ id: "", name: "", price: 0 });
 
   if (error) return nothing("Failed to load");
-  if (isLoading) return nothing("Loading...");
+  if (isLoading) return nothing(<Loader />);
+
+  const handleAdd = () => {
+    fetch("/api/products", {
+      method: "POST",
+      body: JSON.stringify({ name, price }),
+    }).then((res) => {
+      setAlert(true);
+      if (res.ok) {
+        setModalSucess(true);
+      } else {
+        setModalSucess(false);
+      }
+
+      setName("");
+      setPrice(0);
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      setAlert(true);
+
+      if (res.ok) {
+        setModalSucess(true);
+      } else {
+        setModalSucess(true);
+      }
+    });
+  };
+
+  const handleUpdate = (id: string) => {
+    fetch(`/api/products/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(toEdit),
+    }).then((res) => {
+      setAlert(true);
+      if (res.ok) {
+        setModalSucess(true);
+      } else {
+        setModalSucess(false);
+      }
+    });
+  };
 
   return (
     <>
       <Alert
         display={alert ? "block" : "none"}
         icon={<IconAlertCircle size={16} />}
-        title="Product added"
-        color={addSuccess ? "green" : "red"}
+        title="Action"
+        color={modelSucess ? "green" : "red"}
         withCloseButton
         variant="filled"
         onClose={() => setAlert(false)}
       >
-        {addSuccess ? "Product added successfully" : "Failed to add product"}
+        {modelSucess
+          ? "Action completed successfully"
+          : "Failed to perform action"}
       </Alert>
+      <Modal opened={edit} onClose={() => setEdit(false)} title="Edit Product">
+        <Flex direction="column" gap="lg">
+          <Input
+            placeholder="Name"
+            value={toEdit.name}
+            onChange={(e) => setToEdit({ ...toEdit, name: e.target.value })}
+          />
+          <NumberInput
+            value={toEdit.price}
+            onChange={(val: number) => setToEdit({ ...toEdit, price: val })}
+            min={0}
+          />
+          <Button
+            size="md"
+            style={{
+              alignSelf: "flex-end",
+            }}
+            onClick={() => {
+              handleUpdate(toEdit.id);
+              setEdit(false);
+            }}
+          >
+            Submit
+          </Button>
+        </Flex>
+      </Modal>
       <Container h="100vh">
         <Flex h="100%" direction="column" justify="center">
           <Flex direction="column" gap="lg">
@@ -64,23 +141,7 @@ export default function Product() {
               style={{
                 alignSelf: "flex-end",
               }}
-              onClick={() => {
-                fetch("/api/products", {
-                  method: "POST",
-                  body: JSON.stringify({ name, price }),
-                }).then((res) => {
-                  if (res.ok) {
-                    setAlert(true);
-                    setAddSucess(true);
-                  } else {
-                    setAlert(false);
-                    setAddSucess(true);
-                  }
-
-                  setName("");
-                  setPrice(0);
-                });
-              }}
+              onClick={handleAdd}
             >
               Submit
             </Button>
@@ -99,8 +160,35 @@ export default function Product() {
                   key={product.id}
                   w={200}
                 >
-                  <Text>Name: {product.name}</Text>
-                  <Text>Price: {product.price}</Text>
+                  <Flex justify="space-between">
+                    <Box style={{ width: 100 }}>
+                      <Text fw={700} truncate>
+                        {product.name}
+                      </Text>
+                      <Text>₱{product.price}</Text>
+                    </Box>
+                    <Flex direction="column">
+                      <ActionIcon
+                        color="blue"
+                        onClick={() => {
+                          setToEdit({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                          });
+                          setEdit(true);
+                        }}
+                      >
+                        <IconEdit size={18} />
+                      </ActionIcon>
+                      <ActionIcon
+                        color="red"
+                        onClick={() => handleDelete(product.id)}
+                      >
+                        <IconTrash size={18} />
+                      </ActionIcon>
+                    </Flex>
+                  </Flex>
                 </Card>
               ))}
             </Flex>
@@ -111,7 +199,7 @@ export default function Product() {
   );
 }
 
-function nothing(message: string) {
+function nothing(message: string | ReactNode) {
   return (
     <Container>
       <Center h={500}>{message}</Center>
